@@ -1,6 +1,7 @@
 from rest_framework import viewsets, generics
 from .serializers import *
 from .models import *
+from .permission import CheckCreateStore, CheckEditStore
 
 
 class UserProfileViewSet(viewsets.ModelViewSet):
@@ -25,6 +26,16 @@ class StoreDetailApiView(generics.RetrieveAPIView):
     queryset = Store.objects.all()
     serializer_class = StoreDetailSerializers
 
+
+class StoreCreateApiView(generics.CreateAPIView):
+    serializer_class = StoreSerializers
+    permission_classes = [CheckCreateStore]
+
+
+class StoreUpdateDeleteApiView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Store.objects.all()
+    serializer_class = StoreSerializers
+    permission_classes = [CheckCreateStore, CheckEditStore]
 
 
 class ProductViewSet(viewsets.ModelViewSet):

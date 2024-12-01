@@ -38,7 +38,29 @@ class Store(models.Model):
     def __str__(self):
         return self.store_name
 
+    def get_avg_rating(self):
+        ratings = self.store_review.all()
+        if ratings.exists():
+            return round(sum(i.rating for i in ratings) / ratings.count(), 1)
+        return 0
 
+    def get_count_people(self):
+        ratings = self.store_review.all()
+        if ratings.exists():
+            if ratings.count() > 2:
+                return f'2+'
+            return ratings.count()
+        return 0
+
+    def get_count_good_grade(self):
+        ratings = self.store_review.all()
+        if ratings.exists():
+            num = 0
+            for i in ratings:
+                    if i.rating > 3 :
+                        num += 1
+            return f'{round((num * 100) / ratings.count())}%'
+        return f'0%'
 
 class ContactInfo(models.Model):
     contact_info = PhoneNumberField()

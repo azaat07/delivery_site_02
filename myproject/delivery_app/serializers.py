@@ -96,10 +96,23 @@ class StoreReviewSerializers(serializers.ModelSerializer):
 
 class StoreListSerializers(serializers.ModelSerializer):
     category = CategorySerializers()
+    avg_rating = serializers.SerializerMethodField()
+    count_people = serializers.SerializerMethodField()
+    count_good_grade = serializers.SerializerMethodField()
+
     class Meta:
         model = Store
-        fields = ['id', 'store_name', 'store_image', 'category']
+        fields = ['id', 'store_name', 'store_image', 'category', 'avg_rating',
+                  'count_people', 'count_good_grade']
 
+    def get_avg_rating(self, obj):
+        return obj.get_avg_rating()
+
+    def get_count_people(self, obj):
+        return obj.get_count_people()
+
+    def get_count_good_grade(self, obj):
+        return obj.get_count_good_grade()
 
 class StoreDetailSerializers(serializers.ModelSerializer):
     category = CategorySerializers()
@@ -113,3 +126,10 @@ class StoreDetailSerializers(serializers.ModelSerializer):
         model = Store
         fields = ['store_name', 'store_image', 'category', 'description', 'address', 'owner', 'contacts',
                     'products', 'combos', 'store_review']
+
+
+class StoreSerializers(serializers.ModelSerializer):
+
+    class Meta:
+        model = Store
+        fields = ['store_name', 'store_name', 'category', 'description', 'address', 'owner']

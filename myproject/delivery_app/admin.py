@@ -1,21 +1,21 @@
 from django.contrib import admin
 from .models import *
-from modeltranslation.admin import TranslationAdmin
+from modeltranslation.admin import TranslationAdmin, TranslationInlineModelAdmin
 
 class ContactInfoInline(admin.TabularInline):
     model = ContactInfo
     extra = 1
 
-class ProductInline(admin.TabularInline):
+class ProductInline(TranslationInlineModelAdmin, admin.TabularInline):
     model = Product
     extra = 1
 
-class ProductComboInline(admin.TabularInline):
+class ProductComboInline(TranslationInlineModelAdmin, admin.TabularInline):
     model = ProductCombo
     extra = 1
 
 
-@admin.register(Category, Product, ProductCombo)
+@admin.register(Category,)
 class AllAdmin(TranslationAdmin):
     class Media:
         js = (

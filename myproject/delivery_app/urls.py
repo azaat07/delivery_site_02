@@ -19,4 +19,6 @@ urlpatterns = [
     path('', include(router.urls)),
     path('store/', StoreListApiView.as_view(), name='store_list'),
     path('store/<int:pk>/', StoreDetailApiView.as_view(), name='store_detail'),
+    path('store/create/', StoreCreateApiView.as_view(), name='store_create'),
+    path('store/create/<int:pk>/', StoreUpdateDeleteApiView.as_view(), name='store_edit')
 ]
