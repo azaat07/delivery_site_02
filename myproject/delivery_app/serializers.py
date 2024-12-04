@@ -37,13 +37,6 @@ class ContactInfoSerializers(serializers.ModelSerializer):
 
 
 
-class ProductSerializers(serializers.ModelSerializer):
-    class Meta:
-        model = Product
-        fields = ['product_name', 'product_image', 'price', 'description']
-
-
-
 class ProductComboSerializers(serializers.ModelSerializer):
     class Meta:
         model = ProductCombo
@@ -113,6 +106,14 @@ class StoreListSerializers(serializers.ModelSerializer):
 
     def get_count_good_grade(self, obj):
         return obj.get_count_good_grade()
+
+
+class ProductSerializers(serializers.ModelSerializer):
+    products = StoreListSerializers(many=True, read_only=True)
+
+    class Meta:
+        model = Product
+        fields = ['product_name', 'product_image', 'price', 'description', 'products']
 
 class StoreDetailSerializers(serializers.ModelSerializer):
     category = CategorySerializers()

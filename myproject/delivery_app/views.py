@@ -1,7 +1,9 @@
 from rest_framework import viewsets, generics
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
+
 from .serializers import *
 from .models import *
-from .permission import CheckCreateStore, CheckEditStore
+from .permission import CheckCreateStore, CheckEditStore, CheckOwner
 
 
 class UserProfileViewSet(viewsets.ModelViewSet):
@@ -25,6 +27,12 @@ class StoreListApiView(generics.ListAPIView):
 class StoreDetailApiView(generics.RetrieveAPIView):
     queryset = Store.objects.all()
     serializer_class = StoreDetailSerializers
+    permission_classes = [CheckOwner]
+
+    def perform_create(self, serializer):
+        return serializer.save(owner=object.request.user)
+
+
 
 
 class StoreCreateApiView(generics.CreateAPIView):
@@ -41,6 +49,11 @@ class StoreUpdateDeleteApiView(generics.RetrieveUpdateDestroyAPIView):
 class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializers
+
+
+class ProductCreateApiView(generics.CreateAPIView):
+    serializer_class = ProductSerializers
+    permission_classes = [CheckCreateStore]
 
 
 
